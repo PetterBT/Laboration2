@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class EmployeeManagerTest {
 
@@ -59,5 +61,16 @@ class EmployeeManagerTest {
     void toStringShouldContainEmployeeSalary() {
         Employee employee = stubEmployee();
         assertThat(employee.toString()).contains(String.valueOf(employee.getSalary()));
+    }
+    @Test
+    void numberOfPaymentsShouldBeEqualToNumberOfEmployees() {
+        EmployeeRepository mockEmployeeRepository = mock(EmployeeRepository.class);
+        BankService mockBankService = mock(BankService.class);
+        EmployeeManager employeeManager = new EmployeeManager(mockEmployeeRepository, mockBankService);
+
+        List<Employee> employees = stubEmployeeList();
+        when(mockEmployeeRepository.findAll()).thenReturn(employees);
+
+        assertThat(employeeManager.payEmployees()).isEqualTo(3);
     }
 }
