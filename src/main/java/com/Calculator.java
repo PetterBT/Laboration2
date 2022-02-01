@@ -3,18 +3,18 @@ package com;
 public class Calculator {
 
     static int add(String numbers) {
-        if (numbers.isEmpty())
-        return 0;
-        else if (numbers.contains(",")) {
+        if (!numbers.isEmpty()) {
             String[] numbersArr = numbers.split(",");
-            int sum = 0;
-            for (int i = 0; i < numbersArr.length; i++) {
-                sum += Integer.parseInt(numbersArr[i]);
-            }
-            return sum;
+            return getSum(numbersArr);
         }
-        else {
-            return Integer.parseInt(numbers);
+        else return 0;
+    }
+
+    private static int getSum(String[] numbersArr) {
+        int sum = 0;
+        for (String s : numbersArr) {
+            sum += Integer.parseInt(s);
         }
+        return sum;
     }
 }
