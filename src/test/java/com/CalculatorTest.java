@@ -31,4 +31,9 @@ public class CalculatorTest {
         assertThat(Calculator.add("2\n3,5")).isEqualTo(10);
         assertThatThrownBy(() -> Calculator.add("2,\n3"));
     }
+    @Test
+    void shouldChangeDelimiterWhenInputStartsWithDubbleForwardSlash() {
+        assertThat(Calculator.add("//;\n2;4;4")).isEqualTo(10);
+        assertThat(Calculator.add("//-\n10-16-76-98")).isEqualTo(200);
+    }
 }
