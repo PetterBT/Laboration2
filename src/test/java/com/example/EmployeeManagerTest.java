@@ -2,12 +2,22 @@ package com.example;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class EmployeeManagerTest {
 
     public Employee stubEmployee() {
         return new Employee("1", 100.0);
+    }
+
+    private List<Employee> stubEmployeeList() {
+        return Arrays.asList(
+                new Employee("1", 10.0),
+                new Employee("2", 50.0),
+                new Employee("3", 100.0));
     }
 
     @Test
