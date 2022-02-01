@@ -40,4 +40,14 @@ class EmployeeManagerTest {
         employee.setPaid(false);
         assertThat(employee.isPaid()).isFalse();
     }
+    @Test
+    void toStringShouldContainEmployeeId() {
+        Employee employee = stubEmployee();
+        assertThat(employee.toString()).contains(employee.getId());
+    }
+    @Test
+    void toStringShouldContainEmployeeSalary() {
+        Employee employee = stubEmployee();
+        assertThat(employee.toString()).contains(String.valueOf(employee.getSalary()));
+    }
 }
