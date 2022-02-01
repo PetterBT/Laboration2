@@ -14,7 +14,6 @@ class EmployeeManagerTest {
     public Employee stubEmployee() {
         return new Employee("1", 100.0);
     }
-
     private List<Employee> stubEmployeeList() {
         return Arrays.asList(
                 new Employee("1", 10.0),
@@ -72,5 +71,17 @@ class EmployeeManagerTest {
         when(mockEmployeeRepository.findAll()).thenReturn(employees);
 
         assertThat(employeeManager.payEmployees()).isEqualTo(3);
+    }
+    @Test
+    void runtimeExceptionDuringPaymentShouldSetIsPaidToFalse() {
+        EmployeeRepository mockEmployeeRep = mock(EmployeeRepository.class);
+        BankService stubBankService = new TestBankService();
+        EmployeeManager employeeManager = new EmployeeManager(mockEmployeeRep, stubBankService);
+
+        List<Employee> employees = stubEmployeeList();
+        when(mockEmployeeRep.findAll()).thenReturn(employees);
+        employeeManager.payEmployees();
+
+        assertThat(employees.get(0).isPaid()).isEqualTo(false);
     }
 }
