@@ -37,4 +37,13 @@ public class CalculatorTest {
         assertThat(Calculator.add("//;\n2;4;4")).isEqualTo(10);
         assertThat(Calculator.add("//-\n10-16-76-98")).isEqualTo(200);
     }
+    @Test
+    void negativeNumbersShouldThrowExceptionWithMessage() {
+        assertThatThrownBy(() -> Calculator.add("-19989"))
+                .hasMessageContaining("negatives not allowed")
+                .hasMessageContaining("-19989");
+        assertThatThrownBy(() -> Calculator.add("-1,7,-3"))
+                .hasMessageContaining("negatives not allowed ")
+                .hasMessageContaining("-1 -3");
+    }
 }

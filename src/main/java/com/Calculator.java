@@ -1,5 +1,9 @@
 package com;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Calculator {
 
     static int add(String numbers) {
@@ -12,9 +16,18 @@ public class Calculator {
                 numbers = parts[1];
             }
             String[] numbersArr = numbers.split(delimiter);
+            noNegativeNumbers(toInt(numbersArr));
             return getSum(numbersArr);
         }
         else return 0;
+    }
+    private static void noNegativeNumbers(List<Integer> numbers) {
+        StringBuilder builder = new StringBuilder();
+        numbers.stream()
+                .filter(n -> n < 0)
+                .forEach(n -> builder.append(n).append(" "));
+        if (!builder.toString().isEmpty()) {
+            throw new RuntimeException("negatives not allowed " + builder.toString());}
     }
     private static int getSum(String[] numbersArr) {
         int sum = 0;
@@ -22,5 +35,10 @@ public class Calculator {
             sum += Integer.parseInt(s);
         }
         return sum;
+    }
+    private static List<Integer> toInt(String[] numbers) {
+        return Arrays.stream(numbers)
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
     }
 }
