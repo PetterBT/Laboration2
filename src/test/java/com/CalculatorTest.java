@@ -12,6 +12,8 @@ public class CalculatorTest {
     }
     @Test
     void stringWithOneNumberShouldReturnNumber() {
+
+        assertThat(Calculator.add("5")).isEqualTo(5);
         assertThat(Calculator.add("69")).isEqualTo(69);
     }
 
