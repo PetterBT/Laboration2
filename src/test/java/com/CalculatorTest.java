@@ -29,7 +29,8 @@ public class CalculatorTest {
     @Test
     void shouldAcceptNewLineInsteadOfCommaAsDelimiter() {
         assertThat(Calculator.add("2\n3,5")).isEqualTo(10);
-        assertThatThrownBy(() -> Calculator.add("2,\n3"));
+        assertThatThrownBy(() -> Calculator.add("2,\n3"))
+                .isInstanceOf(NumberFormatException.class);
     }
     @Test
     void shouldChangeDelimiterWhenInputStartsWithDubbleForwardSlash() {
