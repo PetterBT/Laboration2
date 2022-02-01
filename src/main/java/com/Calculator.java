@@ -46,6 +46,8 @@ public class Calculator {
     private static int getSum(List<Integer> numbers) {
         int sum = 0;
         for (Integer n : numbers) {
+            if (n >= 1000)
+                n = 0;
             sum += n;
         }
         return sum;

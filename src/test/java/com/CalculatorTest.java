@@ -46,4 +46,9 @@ public class CalculatorTest {
                 .hasMessageContaining("negatives not allowed ")
                 .hasMessageContaining("-1 -3");
     }
+    @Test
+    void numbersLargerThan1000ShouldBeIgnored() {
+        assertThat(Calculator.add("2,1002,5")).isEqualTo(7);
+        assertThat(Calculator.add("1009,1008")).isEqualTo(0);
+    }
 }
