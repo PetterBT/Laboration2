@@ -32,5 +32,12 @@ class EmployeeManagerTest {
         employee.setSalary(50.0);
         assertThat(employee.getSalary()).isEqualTo(50.0);
     }
-
+    @Test
+    void shouldSetPaidOfStubEmployee() {
+        Employee employee = stubEmployee();
+        employee.setPaid(true);
+        assertThat(employee.isPaid()).isTrue();
+        employee.setPaid(false);
+        assertThat(employee.isPaid()).isFalse();
+    }
 }
