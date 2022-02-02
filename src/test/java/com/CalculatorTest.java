@@ -58,4 +58,9 @@ public class CalculatorTest {
         assertThat(calculator.add("//kkk\n5kkk5")).isEqualTo(10);
         assertThat(calculator.add("//***\n5***5***69")).isEqualTo(79);
     }
+    @Test
+    void multipleDelimitersShouldBeAllowed() {
+        assertThat(calculator.add("//[kkk][---]\n5kkk5---5")).isEqualTo(15);
+        assertThat(calculator.add("//[***][+++]\n5***5+++69")).isEqualTo(79);
+    }
 }

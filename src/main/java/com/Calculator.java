@@ -35,6 +35,7 @@ public class Calculator {
         String delimiter = firstPart.substring(2);
         if (delimiter.startsWith("[")) {
             delimiter = delimiter.substring(1, delimiter.length() - 1);
+            return Stream.of(delimiter.split(("]\\["))).map(Pattern::quote).collect(Collectors.joining("|"));
         }
         return Pattern.quote(delimiter);
     }
