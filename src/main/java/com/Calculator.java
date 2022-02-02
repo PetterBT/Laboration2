@@ -1,55 +1,60 @@
 package com;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class Calculator {
 
-    static int add(String numbers) {
-       if (numbers.isEmpty())
+    private String delimiter;
+    private String numbers;
+
+    public Calculator() {}
+    public Calculator(String delimiter, String numbers) {
+        this.delimiter = delimiter;
+        this.numbers = numbers;
+    }
+
+    int add(String input) {
+       if (input.isEmpty())
            return 0;
        else {
-           List<Integer> numbersList = toInt(getSplit(numbers));
-           checkForNegativeNumbers(numbersList);
-           return getSum(numbersList);
+           return sortOutNumbers(input).getSum();
        }
     }
-    private static String[] getSplit(String numbers) {
-        String delimiter = "[,\n]";
-        if (numbers.startsWith("//")) {
-            String[] parts = numbers.split("\n",2);
-            delimiter = parts[0].substring(2);
-            numbers = parts[1];
+    private static Calculator sortOutNumbers(String input) {
+        if (input.startsWith("//")) {
+            String[] parts = input.split("\n", 2);
+            return new Calculator(getCustomDelimiter(parts[0]), parts[1]);
         }
-        return numbers.split(delimiter);
-    }
-
-    private static List<Integer> toInt(String[] numbers) {
-        return Arrays.stream(numbers)
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
-    }
-
-    private static void checkForNegativeNumbers(List<Integer> numbers) {
-        StringBuilder builder = new StringBuilder();
-        numbers.stream()
-                .filter(n -> n < 0)
-                .forEach(n -> builder.append(n).append(" "));
-        printNegatives(builder);
-    }
-
-    private static void printNegatives(StringBuilder builder) {
-        if (!builder.toString().isEmpty()) {
-            throw new RuntimeException("negatives not allowed " + builder);}
-    }
-    private static int getSum(List<Integer> numbers) {
-        int sum = 0;
-        for (Integer n : numbers) {
-            if (n >= 1000)
-                n = 0;
-            sum += n;
+            else
+                return new Calculator(",|\n", input);
         }
-        return sum;
+    private static String getCustomDelimiter(String firstPart) {
+        String delimiter = firstPart.substring(2);
+        if (delimiter.startsWith("[")) {
+            delimiter = delimiter.substring(1, delimiter.length() - 1);
+        }
+        return Pattern.quote(delimiter);
+    }
+    private int getSum() {
+        checkForNegativeNumbers();
+        return getNumbers().sum();
+    }
+    private void checkForNegativeNumbers() {
+        String negatives = getNumbers().filter(n -> n < 0)
+                .mapToObj(Integer::toString)
+                .collect(Collectors.joining(" "));
+        printNegativeNumbers(negatives);
+    }
+    private void printNegativeNumbers(String negatives) {
+        if (!negatives.isEmpty()) {
+            throw new RuntimeException("negatives not allowed " + negatives);}
+    }
+    private IntStream getNumbers() {
+        return Stream.of(numbers.split(delimiter))
+                .mapToInt(Integer::parseInt)
+                .filter(n -> n < 1000);
     }
 }
