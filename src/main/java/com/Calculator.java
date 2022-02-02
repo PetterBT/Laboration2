@@ -24,30 +24,31 @@ public class Calculator {
        }
     }
     private static Calculator sortOutNumbers(String input) {
-        if (input.startsWith("//")) {
-            String[] parts = input.split("\n", 2);
-            return new Calculator(getCustomDelimiter(parts[0]), parts[1]);
+        if (!input.startsWith("//"))
+            return new Calculator(",|\n", input);
+        else {
+        String[] delimiterAndNumbers = input.split("\n", 2);
+            return new Calculator(getCustomDelimiter(delimiterAndNumbers[0]), delimiterAndNumbers[1]);
         }
-            else
-                return new Calculator(",|\n", input);
-        }
-    private static String getCustomDelimiter(String firstPart) {
-        String delimiter = firstPart.substring(2);
+    }
+    private static String getCustomDelimiter(String customDelimiter) {
+        String delimiter = customDelimiter.substring(2);
         if (delimiter.startsWith("[")) {
             delimiter = delimiter.substring(1, delimiter.length() - 1);
-            return Stream.of(delimiter.split(("]\\["))).map(Pattern::quote).collect(Collectors.joining("|"));
         }
-        return Pattern.quote(delimiter);
+        return Stream.of(delimiter.split("]\\["))
+                .map(Pattern::quote)
+                .collect(Collectors.joining("|"));
     }
     private int getSum() {
         checkForNegativeNumbers();
         return getNumbers().sum();
     }
     private void checkForNegativeNumbers() {
-        String negatives = getNumbers().filter(n -> n < 0)
+        String negativeNumbers = getNumbers().filter(n -> n < 0)
                 .mapToObj(Integer::toString)
                 .collect(Collectors.joining(" "));
-        printNegativeNumbers(negatives);
+        printNegativeNumbers(negativeNumbers);
     }
     private void printNegativeNumbers(String negatives) {
         if (!negatives.isEmpty()) {
